@@ -1,7 +1,7 @@
 #= require ./relative_time
 #= require ./page_observer
 
-{parseDate, strftime, getI18nValue, config} = LocalTime
+{ parseDate, strftime, getI18nValue, config } = LocalTime
 
 class LocalTime.Controller
   SELECTOR = "time[data-local]:not([data-localized])"
@@ -33,7 +33,7 @@ class LocalTime.Controller
     return if isNaN time
 
     unless element.hasAttribute("title")
-      title = strftime(time, getI18nValue("datetime.formats.default"))
+      title = strftime(time, getI18nValue("#{local}.formats.default"))
       element.setAttribute("title", title)
 
     element.textContent = content =
@@ -43,7 +43,7 @@ class LocalTime.Controller
           strftime(time, format)
         when "date"
           markAsLocalized(element)
-          relative(time).toDateString()
+          strftime(time, format)
         when "time-ago"
           relative(time).toString()
         when "time-or-date"

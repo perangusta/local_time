@@ -1,12 +1,10 @@
-{config} = LocalTime
-{i18n} = config
 
-LocalTime.getI18nValue = (keyPath = "", {locale} = locale: config.locale) ->
-  value = getValue(i18n[locale], keyPath)
+LocalTime.getI18nValue = (keyPath = "", { locale } = { locale: LocalTime.config.locale }) ->
+  value = getValue(LocalTime.config.i18n[locale], keyPath)
   if value?
     value
-  else if locale isnt config.defaultLocale
-    LocalTime.getI18nValue(keyPath, locale: config.defaultLocale)
+  else if locale isnt LocalTime.config.defaultLocale
+    LocalTime.getI18nValue(keyPath, { locale: LocalTime.config.defaultLocale })
 
 LocalTime.translate = (keyPath, interpolations = {}, options) ->
   string = LocalTime.getI18nValue(keyPath, options)

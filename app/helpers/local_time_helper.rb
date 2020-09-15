@@ -1,37 +1,25 @@
 module LocalTimeHelper
-  def local_time(time, options = nil)
-    time = utc_time(time)
+  def local_date(time_or_date, format: :default, **options)
+    # we ensure to fallback to :default
+    return options[:default] unless time_or_date
 
-    options, format = extract_options_and_value(options, :format)
-    format = find_time_format(format)
+    # we ensure the format will be of correct type
+    # we ensure we have an UTC formatted time
+    # we ensure there is at least a formatted value (if javascript fails)
+    # we ensure to fallback to :default
+    value = ::I18n.l(time_or_date, format: format, default: options[:default])
+    type  = time_or_date.is_a?(Date) ? :date : :time
+    time  = utc_time(time_or_date)
 
-    options[:data] ||= {}
-    options[:data].merge! local: :time, format: format
-
-    time_tag time, time.strftime(format), options
-  end
-
-  def local_date(time, options = nil)
-    options, format = extract_options_and_value(options, :format)
-    options[:format] = format || LocalTime.default_date_format
-    local_time time, options
-  end
-
-  def local_relative_time(time, options = nil)
-    time = utc_time(time)
-    options, type = extract_options_and_value(options, :type)
+    format = ::I18n.get_date_format(type: type, format: format)
 
     options[:data] ||= {}
-    options[:data].merge! local: type
+    options[:data].merge! local: type, format: format
 
-    time_tag time, time.strftime(LocalTime.default_time_format), options
+    time_tag time, value, options
   end
 
-  def local_time_ago(time, options = nil)
-    options, * = extract_options_and_value(options, :type)
-    options[:type] = 'time-ago'
-    local_relative_time time, options
-  end
+  alias_method :local_time, :local_date
 
   def utc_time(time_or_date)
     if time_or_date.respond_to?(:in_time_zone)
@@ -40,31 +28,4 @@ module LocalTimeHelper
       time_or_date.to_time.utc
     end
   end
-
-  private
-    def find_time_format(format)
-      if format.is_a?(Symbol)
-        if (i18n_format = I18n.t("time.formats.#{format}", default: [:"date.formats.#{format}", ''])).present?
-          i18n_format
-        elsif (date_format = Time::DATE_FORMATS[format] || Date::DATE_FORMATS[format])
-          date_format.is_a?(Proc) ? LocalTime.default_time_format : date_format
-        else
-          LocalTime.default_time_format
-        end
-      else
-        format.presence || LocalTime.default_time_format
-      end
-    end
-
-    def extract_options_and_value(options, value_key = nil)
-      case options
-      when Hash
-        value = options.delete(value_key)
-        [ options, value ]
-      when NilClass
-        [ {} ]
-      else
-        [ {}, options ]
-      end
-    end
 end

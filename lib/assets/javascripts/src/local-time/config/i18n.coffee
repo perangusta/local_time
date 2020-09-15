@@ -1,7 +1,7 @@
 LocalTime.config.i18n =
   en:
     date:
-      dayNames: [
+      day_names: [
         "Sunday"
         "Monday"
         "Tuesday"
@@ -10,7 +10,7 @@ LocalTime.config.i18n =
         "Friday"
         "Saturday"
       ]
-      abbrDayNames: [
+      abbr_day_names: [
         "Sun"
         "Mon"
         "Tue"
@@ -19,7 +19,8 @@ LocalTime.config.i18n =
         "Fri"
         "Sat"
       ]
-      monthNames: [
+      month_names: [
+        null
         "January"
         "February"
         "March"
@@ -33,7 +34,8 @@ LocalTime.config.i18n =
         "November"
         "December"
       ]
-      abbrMonthNames: [
+      abbr_month_names: [
+        null
         "Jan"
         "Feb"
         "Mar"

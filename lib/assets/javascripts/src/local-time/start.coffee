@@ -11,7 +11,6 @@ nextFrame = (fn) ->
 
 startController = ->
   controller = LocalTime.getController()
-  controller.start()
 
 LocalTime.start = ->
   unless started
@@ -20,6 +19,3 @@ LocalTime.start = ->
       startController()
     else
       nextFrame(startController)
-
-if window.LocalTime is LocalTime
-  LocalTime.start()

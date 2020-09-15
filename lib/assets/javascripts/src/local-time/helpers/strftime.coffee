@@ -1,4 +1,4 @@
-{getI18nValue, translate} = LocalTime
+{ getI18nValue, translate } = LocalTime
 
 LocalTime.strftime = strftime = (time, formatString) ->
   day    = time.getDay()
@@ -12,10 +12,10 @@ LocalTime.strftime = strftime = (time, formatString) ->
   formatString.replace /%(-?)([%aAbBcdeHIlmMpPSwyYZ])/g, (match, flag, modifier) ->
     switch modifier
       when "%" then "%"
-      when "a" then getI18nValue("date.abbrDayNames")[day]
-      when "A" then getI18nValue("date.dayNames")[day]
-      when "b" then getI18nValue("date.abbrMonthNames")[month]
-      when "B" then getI18nValue("date.monthNames")[month]
+      when "a" then getI18nValue("date.abbr_day_names")[day]
+      when "A" then getI18nValue("date.day_names")[day]
+      when "b" then getI18nValue("date.abbr_month_names")[month + 1]
+      when "B" then getI18nValue("date.month_names")[month + 1]
       when "c" then time.toString()
       when "d" then pad(date, flag)
       when "e" then date
